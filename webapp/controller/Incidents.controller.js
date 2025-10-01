@@ -115,7 +115,7 @@ sap.ui.define([
             var oEntry = this.getView().getModel("IncidentModel").getData();
             var oModel = this.getView().getModel();
 
-         
+
             var aRequiredFields = [
                 { id: "IcrNumber", value: oEntry.number, name: "Number" },
                 { id: "incidents", value: oEntry.changeRequest, name: "Incidents" },
@@ -143,7 +143,7 @@ sap.ui.define([
                 return;
             }
 
-            
+
             oEntry.onHoldcheck = sap.ui.getCore().byId("IcrOnHold").getSelected() ? "Y" : "N";
             var oVistex = sap.ui.getCore().byId("IcrVistex").getSelectedButton();
             oEntry.vistexcheck = oVistex.getSelected() ? oVistex.getText() : "No";
@@ -154,10 +154,11 @@ sap.ui.define([
                 oEntry.createDate = oDatePicker.getDateValue();
             }
             oEntry.updateDate = new Date();
-            oEntry.taskType = "INC"; 
+            oEntry.taskType = "INC";
+            const { isEditable, ...payload } = oEntry;
 
-         
-            oModel.create("/TaskManagement", oEntry, {
+
+            oModel.create("/TaskManagement", payload, {
                 success: function () {
                     MessageToast.show("Incident created successfully");
                     this.oDialog.close();

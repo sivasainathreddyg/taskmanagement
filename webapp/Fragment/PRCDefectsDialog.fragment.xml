@@ -7,49 +7,50 @@
         title="PRCDefects"
     >
         <VBox class="sapUiSmallMargin">
-            <Label text="ID" />
+            <Label text="ID" required="true"/>
             <Input
                 id="idInput"
                 type="Number"
                 value="{PRCDefectsModel>/id}"
                 editable="{= ${PRCDefectsModel>/isEditable} }"
             />
-            <Label text="Title" />
+            <Label text="Title"  required="true"/>
             <Input
                 id="titleInput"
                 value="{PRCDefectsModel>/title}"
                 placeholder="Enter title"
             />
 
-            <Label text="Description" />
+            <Label text="Description"  required="true"/>
             <TextArea
                 id="descriptionInput"
                 value="{PRCDefectsModel>/description}"
                 placeholder="Enter description"
+                width="100%"
             />
 
-            <Label text="Assigned To" />
+            <Label text="Assigned To"  required="true"/>
             <Input
                 id="assignedToInput"
                 value="{PRCDefectsModel>/assignedTo}"
                 placeholder="Assigned To"
             />
 
-            <Label text="Priority" />
+            <Label text="Priority"  required="true"/>
             <Input
                 id="priorityInput"
                 value="{PRCDefectsModel>/priority}"
                 placeholder="Priority"
             />
 
-            <Label text="Status" />
+            <Label text="Status"  required="true"/>
             <Input
                 id="statusInput"
                 value="{PRCDefectsModel>/status}"
                 placeholder="Status"
             />
 
-            <Label text="Effort" />
+            <Label text="Effort"  required="true"/>
             <Input
                 id="effortInput"
                 value="{PRCDefectsModel>/effort}"
@@ -64,7 +65,7 @@
                 placeholder="Resolution"
             />
 
-            <Label text="Created Date" />
+            <Label text="Created Date"  required="true"/>
             <DatePicker
                 id="createdDateInput"
                 value="{PRCDefectsModel>/createdDate}"
@@ -72,7 +73,7 @@
                 displayFormat="long"
             />
 
-            <Label text="Created By" />
+            <Label text="Created By"  required="true"/>
             <Input
                 id="createdByInput"
                 value="{PRCDefectsModel>/createdBy}"

@@ -82,32 +82,100 @@ sap.ui.define([
             if (sText === "Save") {
                 this.onCreatePress();
             } else {
-                this.onUpdatePress();
+                this.onCreatePress();
             }
         },
+
+        // onCreatePress: function () {
+        //     var oEntry = this.getView().getModel("PRCDefectsModel").getData();
+        //     var oModel = this.getView().getModel();
+
+        //     // set created date from DatePicker (if available)
+        //     var oDatePicker = sap.ui.getCore().byId("createdDateInput");
+        //     if (oDatePicker && oDatePicker.getDateValue()) {
+        //         oEntry.createdDate = oDatePicker.getDateValue();
+        //     } else {
+        //         oEntry.createdDate = new Date();
+        //     }
+        //     const { isEditable, ...payload } = oEntry;
+        //     oModel.create("/PRCDefects", payload, {
+        //         success: function () {
+        //             MessageToast.show("PRC Defect created successfully");
+        //             this.oDialog.close();
+        //             this.readdata();
+        //         }.bind(this),
+        //         error: function () {
+        //             MessageBox.error("Creation failed");
+        //         }
+        //     });
+        // },
 
         onCreatePress: function () {
             var oEntry = this.getView().getModel("PRCDefectsModel").getData();
             var oModel = this.getView().getModel();
 
-            // set created date from DatePicker (if available)
-            var oDatePicker = sap.ui.getCore().byId("createdDateInput");
-            if (oDatePicker && oDatePicker.getDateValue()) {
-                oEntry.createdDate = oDatePicker.getDateValue();
-            } else {
-                oEntry.createdDate = new Date();
-            }
-            const { isEditable, ...payload } = oEntry;
-            oModel.create("/PRCDefects", payload, {
-                success: function () {
-                    MessageToast.show("PRC Defect created successfully");
-                    this.oDialog.close();
-                    this.readdata();
-                }.bind(this),
-                error: function () {
-                    MessageBox.error("Creation failed");
+            // --- Required fields ---
+            var aRequiredFields = [
+                { id: "idInput", value: oEntry.id, name: "ID" },
+                { id: "titleInput", value: oEntry.title, name: "Title" },
+                { id: "descriptionInput", value: oEntry.description, name: "Description" },
+                { id: "assignedToInput", value: oEntry.assignedTo, name: "Assigned To" },
+                { id: "priorityInput", value: oEntry.priority, name: "Priority" },
+                { id: "statusInput", value: oEntry.status, name: "Status" },
+                { id: "effortInput", value: oEntry.effort, name: "Effort" },
+                { id: "createdDateInput", value: oEntry.createdDate, name: "Created Date" },
+                { id: "createdByInput", value: oEntry.createdBy, name: "Created By" }
+            ];
+
+            var bValid = true;
+            aRequiredFields.forEach(function (field) {
+                var oControl = sap.ui.getCore().byId(field.id);
+                if (!field.value || field.value.toString().trim() === "") {
+                    oControl.setValueState("Error");
+                    oControl.setValueStateText(field.name + " is required");
+                    bValid = false;
+                } else {
+                    oControl.setValueState("None");
                 }
             });
+
+            if (!bValid) {
+                MessageToast.show("Please fill all required fields");
+                return;
+            }
+
+            // --- Prepare additional data ---
+            // oEntry.updateDate = new Date();
+
+            // Remove any internal fields like isEditable
+            const { isEditable, ...payload } = oEntry;
+
+            // --- Create or Update OData entry ---
+            if (this.oDialog.getBeginButton().getText() === "Save") {
+                // Create
+                oModel.create("/PRCDefects", payload, {
+                    success: function () {
+                        MessageToast.show("PRCDefects created successfully");
+                        this.oDialog.close();
+                        this.readdata();
+                    }.bind(this),
+                    error: function () {
+                        MessageBox.error("Creation failed");
+                    }
+                });
+            } else {
+                // Update
+                oModel.update("/PRCDefects(" + oEntry.id + ")", payload, {
+                    success: function () {
+                        MessageToast.show("PRCDefects updated successfully");
+                        this.oDialog.close();
+                        this.readdata();
+                    }.bind(this),
+                    error: function () {
+                        MessageBox.error("Update failed");
+                    }
+                });
+            }
         },
 
         onUpdatePress: function () {

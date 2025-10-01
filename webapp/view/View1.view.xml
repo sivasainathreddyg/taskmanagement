@@ -1,0 +1,49 @@
+<mvc:View
+    controllerName="com.taskmanagement.taskmanagement.controller.View1"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+>
+    <Page
+        id="page"
+        title="Task Manager"
+    >
+        <FlexBox
+            direction="Row"
+            wrap="NoWrap"
+            alignItems="Start"
+            justifyContent="Start"
+        >
+            <GenericTile
+                header="Employees Management"
+                press="onEmployeesPress"
+                class="sapUiSmallMargin"
+            />
+            <GenericTile
+                header="Incidents"
+                press="onIncidentsPress"
+                class="sapUiSmallMargin"
+            />
+            <GenericTile
+                header="Change Request"
+                press="onChangeRequestPress"
+                class="sapUiSmallMargin"
+            />
+            <GenericTile
+                header="PRC Defects"
+                press="onPRCDefectsPress"
+                class="sapUiSmallMargin"
+            />
+            <GenericTile
+                header="Projects"
+                press="onProjectsPress"
+                class="sapUiSmallMargin"
+            />
+            <GenericTile
+                header="Dashboard"
+                press="onDashboardPress"
+                class="sapUiSmallMargin"
+            />
+        </FlexBox>
+    </Page>
+</mvc:View>

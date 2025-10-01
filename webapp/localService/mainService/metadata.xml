@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:DataServices m:DataServiceVersion="2.0">
+        <Schema Namespace="TaskManagerService" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+            <Annotation Term="Core.Links" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Collection>
+                    <Record>
+                        <PropertyValue Property="rel" String="author"/>
+                        <PropertyValue Property="href" String="https://cap.cloud.sap"/>
+                    </Record>
+                </Collection>
+            </Annotation>
+            <EntityContainer Name="EntityContainer" m:IsDefaultEntityContainer="true">
+                <EntitySet Name="Employee" EntityType="TaskManagerService.Employee"/>
+                <EntitySet Name="TaskManagement" EntityType="TaskManagerService.TaskManagement"/>
+                <EntitySet Name="ProjectManagement" EntityType="TaskManagerService.ProjectManagement"/>
+                <EntitySet Name="PRCDefects" EntityType="TaskManagerService.PRCDefects"/>
+            </EntityContainer>
+            <EntityType Name="Employee">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="name" Type="Edm.String" MaxLength="100"/>
+                <Property Name="email" Type="Edm.String" MaxLength="100"/>
+                <Property Name="admin" Type="Edm.String" MaxLength="1"/>
+            </EntityType>
+            <EntityType Name="TaskManagement">
+                <Key>
+                    <PropertyRef Name="number"/>
+                </Key>
+                <Property Name="number" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="changeRequest" Type="Edm.String" MaxLength="100"/>
+                <Property Name="type" Type="Edm.String" MaxLength="50"/>
+                <Property Name="status" Type="Edm.String" MaxLength="50"/>
+                <Property Name="BA" Type="Edm.String" MaxLength="100"/>
+                <Property Name="assignedTo" Type="Edm.String" MaxLength="100"/>
+                <Property Name="description" Type="Edm.String"/>
+                <Property Name="createDate" Type="Edm.DateTimeOffset"/>
+                <Property Name="updateDate" Type="Edm.DateTimeOffset"/>
+                <Property Name="onHoldcheck" Type="Edm.String" MaxLength="1"/>
+                <Property Name="vistexcheck" Type="Edm.String" MaxLength="1"/>
+            </EntityType>
+            <EntityType Name="ProjectManagement">
+                <Key>
+                    <PropertyRef Name="projectID"/>
+                    <PropertyRef Name="number"/>
+                </Key>
+                <Property Name="projectID" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="number" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="description" Type="Edm.String"/>
+                <Property Name="projectName" Type="Edm.String" MaxLength="100"/>
+                <Property Name="plannedStartDate" Type="Edm.DateTime" sap:display-format="Date"/>
+                <Property Name="plannedEndDate" Type="Edm.DateTime" sap:display-format="Date"/>
+                <Property Name="status" Type="Edm.String" MaxLength="50"/>
+                <Property Name="assignedTo" Type="Edm.String" MaxLength="50"/>
+                <Property Name="teamSize" Type="Edm.Int32"/>
+            </EntityType>
+            <EntityType Name="PRCDefects">
+                <Key>
+                    <PropertyRef Name="id"/>
+                </Key>
+                <Property Name="id" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="title" Type="Edm.String" MaxLength="200"/>
+                <Property Name="description" Type="Edm.String"/>
+                <Property Name="assignedTo" Type="Edm.String" MaxLength="50"/>
+                <Property Name="priority" Type="Edm.String" MaxLength="20"/>
+                <Property Name="status" Type="Edm.String" MaxLength="50"/>
+                <Property Name="effort" Type="Edm.Int32"/>
+                <Property Name="resolution" Type="Edm.String"/>
+                <Property Name="createdDate" Type="Edm.DateTimeOffset"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="100"/>
+            </EntityType>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

@@ -1,0 +1,96 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <Dialog
+        id="prcDefectsDialog"
+        title="PRCDefects"
+    >
+        <VBox class="sapUiSmallMargin">
+            <Label text="ID" />
+            <Input
+                id="idInput"
+                type="Number"
+                value="{PRCDefectsModel>/id}"
+                editable="{= ${PRCDefectsModel>/isEditable} }"
+            />
+            <Label text="Title" />
+            <Input
+                id="titleInput"
+                value="{PRCDefectsModel>/title}"
+                placeholder="Enter title"
+            />
+
+            <Label text="Description" />
+            <TextArea
+                id="descriptionInput"
+                value="{PRCDefectsModel>/description}"
+                placeholder="Enter description"
+            />
+
+            <Label text="Assigned To" />
+            <Input
+                id="assignedToInput"
+                value="{PRCDefectsModel>/assignedTo}"
+                placeholder="Assigned To"
+            />
+
+            <Label text="Priority" />
+            <Input
+                id="priorityInput"
+                value="{PRCDefectsModel>/priority}"
+                placeholder="Priority"
+            />
+
+            <Label text="Status" />
+            <Input
+                id="statusInput"
+                value="{PRCDefectsModel>/status}"
+                placeholder="Status"
+            />
+
+            <Label text="Effort" />
+            <Input
+                id="effortInput"
+                value="{PRCDefectsModel>/effort}"
+                placeholder="Effort"
+                type="Number"
+            />
+
+            <Label text="Resolution" />
+            <Input
+                id="resolutionInput"
+                value="{PRCDefectsModel>/resolution}"
+                placeholder="Resolution"
+            />
+
+            <Label text="Created Date" />
+            <DatePicker
+                id="createdDateInput"
+                value="{PRCDefectsModel>/createdDate}"
+                valueFormat="yyyy-MM-dd"
+                displayFormat="long"
+            />
+
+            <Label text="Created By" />
+            <Input
+                id="createdByInput"
+                value="{PRCDefectsModel>/createdBy}"
+                placeholder="Created By"
+            />
+        </VBox>
+
+        <beginButton>
+            <Button
+                text="Save"
+                press="onCreateupdatePress"
+            />
+        </beginButton>
+        <endButton>
+            <Button
+                text="Cancel"
+                press="onCancelPress"
+            />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

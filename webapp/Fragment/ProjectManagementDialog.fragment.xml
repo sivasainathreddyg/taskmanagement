@@ -1,0 +1,94 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <Dialog
+        id="ProjectManagement"
+        title="PRCDefects"
+    >
+        <VBox class="sapUiSmallMargin">
+            <Label text="Project ID" />
+            <Input
+                id="projectIDInput"
+                type="Number"
+                value="{ProjectModel>/projectID}"
+                 editable="{= ${ProjectModel>/isEditable} }"
+                placeholder="Auto-generated"
+            />
+
+            <Label text="Number" />
+            <Input
+                id="numberInput"
+                type="Number"
+                value="{ProjectModel>/number}"
+                  editable="{= ${ProjectModel>/isEditable} }"
+                placeholder="Auto-generated"
+            />
+
+            <Label text="Project Name" />
+            <Input
+                id="projectNameInput"
+                value="{ProjectModel>/projectName}"
+                placeholder="Project Name"
+            />
+
+            <Label text="Description" />
+            <TextArea
+                id="PdescriptionInput"
+                value="{ProjectModel>/description}"
+                placeholder="Description"
+            />
+
+            <Label text="Planned Start Date" />
+            <DatePicker
+                id="plannedStartDateInput"
+                value="{ProjectModel>/plannedStartDate}"
+                valueFormat="yyyy-MM-dd"
+                displayFormat="long"
+            />
+
+            <Label text="Planned End Date" />
+            <DatePicker
+                id="plannedEndDateInput"
+                value="{ProjectModel>/plannedEndDate}"
+                valueFormat="yyyy-MM-dd"
+                displayFormat="long"
+            />
+
+            <Label text="Status" />
+            <Input
+                id="PstatusInput"
+                value="{ProjectModel>/status}"
+                placeholder="Status"
+            />
+
+            <Label text="Assigned To" />
+            <Input
+                id="PassignedToInput"
+                value="{ProjectModel>/assignedTo}"
+                placeholder="Assigned To"
+            />
+
+            <Label text="Team Size" />
+            <Input
+                id="teamSizeInput"
+                type="Number"
+                value="{ProjectModel>/teamSize}"
+                placeholder="Team Size"
+            />
+        </VBox>
+
+        <beginButton>
+            <Button
+                text="Save"
+                press="onCreateupdatePress"
+            />
+        </beginButton>
+        <endButton>
+            <Button
+                text="Cancel"
+                press="onCancelPress"
+            />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

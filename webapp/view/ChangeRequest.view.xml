@@ -1,0 +1,111 @@
+<mvc:View
+    controllerName="com.taskmanagement.taskmanagement.controller.ChangeRequest"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <Page
+        title="Change Requests"
+        showNavButton="true"
+        navButtonPress="onpresshome"
+    >
+        <VBox class="sapUiSmallMargin">
+            <!-- Toolbar -->
+            <Toolbar>
+                <Title
+                    text="Manage Change Requests"
+                    level="H2"
+                />
+                <ToolbarSpacer />
+                <Button
+                    text="Add"
+                    icon="sap-icon://add"
+                    press="onAddPress"
+                    type="Emphasized"
+                />
+                <Button
+                    text="Edit"
+                    icon="sap-icon://edit"
+                    press="onEditPress"
+                    type="Emphasized"
+                />
+                <Button
+                    text="Delete"
+                    icon="sap-icon://delete"
+                    press="onDeletePress"
+                    type="Negative"
+                />
+                <Button
+                    icon="sap-icon://refresh"
+                    press="onrefreshPress"
+                    type="Emphasized"
+                />
+            </Toolbar>
+
+            <!-- Table -->
+            <Table
+                id="changeRequestTable"
+                items="{TaskDataModel>/}"
+                inset="false"
+                mode="SingleSelectLeft"
+            >
+                <columns>
+                    <Column>
+                        <Text text="Number" />
+                    </Column>
+                    <Column>
+                        <Text text="Change Request" />
+                    </Column>
+                    <Column>
+                        <Text text="Type" />
+                    </Column>
+                    <Column>
+                        <Text text="Status" />
+                    </Column>
+                    <Column>
+                        <Text text="BA" />
+                    </Column>
+                    <Column>
+                        <Text text="Assigned To" />
+                    </Column>
+                    <Column>
+                        <Text text="Created Date" />
+                    </Column>
+                    <Column>
+                        <Text text="Updated Date" />
+                    </Column>
+                    <Column>
+                        <Text text="On Hold" />
+                    </Column>
+                    <Column>
+                        <Text text="Vistex" />
+                    </Column>
+                </columns>
+
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <Text text="{TaskDataModel>number}" />
+                            <Text text="{TaskDataModel>changeRequest}" />
+                            <Text text="{TaskDataModel>type}" />
+                            <Text text="{TaskDataModel>status}" />
+                            <Text text="{TaskDataModel>BA}" />
+                            <Text text="{TaskDataModel>assignedTo}" />
+                            <Text
+                                text="{ path: 'TaskDataModel>createDate', type: 'sap.ui.model.type.Date', formatOptions: { style: 'medium' }}"
+                            />
+                            <Text
+                                text="{ path: 'TaskDataModel>updateDate', type: 'sap.ui.model.type.Date', formatOptions: { style: 'medium' }}"
+                            />
+                            <Text
+                                text="{path: 'TaskDataModel>onHoldcheck',formatter:'.yesNoFormatter'}"
+                            />
+
+                            <Text text="{TaskDataModel>vistexcheck}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </VBox>
+    </Page>
+</mvc:View>

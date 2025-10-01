@@ -1,0 +1,154 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <Dialog
+        id="Incident"
+        title="Change Request"
+    >
+        <VBox class="sapUiSmallMargin">
+            <!-- Number -->
+            <Label text="Number" />
+            <Input
+                id="IcrNumber"
+                type="Number"
+                editable="{= ${IncidentModel>/isEditable} }"
+                value="{IncidentModel>/number}"
+            />
+
+            <!-- Change Request -->
+            <Label text="Incidents" />
+            <Input
+                id="incidents"
+                value="{IncidentModel>/changeRequest}"
+            />
+
+            <!-- Type -->
+            <Label text="Type" />
+            <Select
+                id="IcrType"
+                selectedKey="{IncidentModel>/type}"
+            >
+                <core:Item
+                    key=""
+                    text="-- Select Type --"
+                />
+                <core:Item
+                    key="Planning"
+                    text="Planning"
+                />
+                <core:Item
+                    key="Implementation"
+                    text="Implementation"
+                />
+                <core:Item
+                    key="Testing"
+                    text="Testing"
+                />
+                <core:Item
+                    key="Review"
+                    text="Review"
+                />
+            </Select>
+
+            <!-- Status (Hardcoded) -->
+            <Label text="Status" />
+            <Select
+                id="IcrStatus"
+                selectedKey="{IncidentModel>/status}"
+            >
+                <core:Item
+                    key=""
+                    text="-- Select Status --"
+                />
+                <core:Item
+                    key="Pending"
+                    text="Pending"
+                />
+                <core:Item
+                    key="Open"
+                    text="Open"
+                />
+                <core:Item
+                    key="InProgress"
+                    text="InProgress"
+                />
+                <core:Item
+                    key="Closed"
+                    text="Closed"
+                />
+                <core:Item
+                    key="Canceled"
+                    text="Canceled"
+                />
+            </Select>
+            <!-- BA (Input instead of dropdown) -->
+            <Label text="BA" />
+            <Input
+                id="IcrBA"
+                value="{IncidentModel>/BA}"
+            />
+
+            <!-- Assigned To (Input instead of dropdown) -->
+            <Label text="Assigned To" />
+            <Input
+                id="IcrAssignedTo"
+                value="{IncidentModel>/assignedTo}"
+            />
+
+            <!-- Description -->
+            <Label text="Description" />
+            <TextArea
+                id="IcrDescription"
+                value="{IncidentModel>/description}"
+                rows="1"
+                width="100%"
+            />
+            <Label text="Created Date" />
+            <DatePicker
+                id="ICreateDate"
+                value="{IncidentModel>/createDate}"
+                displayFormat="yyyy-MM-dd"
+                valueFormat="yyyy-MM-dd"
+            />
+            <!-- On Hold (Radio Buttons) -->
+            <CheckBox
+                id="IcrOnHold"
+                text="On Hold"
+                selected="{IncidentModel>/onHoldcheck}"
+            />
+
+            <!-- Vistex Check (Horizontal Radio Buttons) -->
+            <Label text="Vistex Check" />
+            <RadioButtonGroup
+                id="IcrVistex"
+                selectedIndex="{IncidentModel>/vistexcheck}"
+                columns="2"
+            >
+                <buttons>
+                    <RadioButton
+                        text="Yes"
+                        key="Yes"
+                    />
+                    <RadioButton
+                        text="No"
+                        key="No"
+                    />
+                </buttons>
+            </RadioButtonGroup>
+        </VBox>
+
+        <beginButton>
+            <Button
+                text="Save"
+                press="onCreateupdatePress"
+            />
+        </beginButton>
+        <endButton>
+            <Button
+                text="Cancel"
+                press="onCancelPress"
+            />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

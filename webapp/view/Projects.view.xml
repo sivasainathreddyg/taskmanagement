@@ -1,0 +1,104 @@
+<mvc:View
+    controllerName="com.taskmanagement.taskmanagement.controller.Projects"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <Page
+        title="Project Management"
+        showNavButton="true"
+        navButtonPress="onpresshome"
+    >
+        <VBox class="sapUiSmallMargin">
+            <!-- Toolbar -->
+            <Toolbar>
+                <Title
+                    text="Project Management"
+                    level="H2"
+                />
+                <ToolbarSpacer />
+                <Button
+                    text="Add"
+                    icon="sap-icon://add"
+                    press="onAddPress"
+                    type="Emphasized"
+                />
+                <Button
+                    text="Edit"
+                    icon="sap-icon://edit"
+                    press="onEditPress"
+                    type="Emphasized"
+                />
+                <Button
+                    text="Delete"
+                    icon="sap-icon://delete"
+                    press="onDeletePress"
+                    type="Negative"
+                />
+                <Button
+                    icon="sap-icon://refresh"
+                    press="onrefreshPress"
+                    type="Emphasized"
+                />
+            </Toolbar>
+
+            <!-- Table -->
+            <Table
+                id="projectManagementTable"
+                items="{TaskDataModel>/}"
+                inset="false"
+                mode="SingleSelectLeft"
+            >
+                <columns>
+                    <Column>
+                        <Text text="Project ID" />
+                    </Column>
+                    <Column>
+                        <Text text="Number" />
+                    </Column>
+                    <Column>
+                        <Text text="Project Name" />
+                    </Column>
+                    <Column>
+                        <Text text="Description" />
+                    </Column>
+                    <Column>
+                        <Text text="Planned Start Date" />
+                    </Column>
+                    <Column>
+                        <Text text="Planned End Date" />
+                    </Column>
+                    <Column>
+                        <Text text="Status" />
+                    </Column>
+                    <Column>
+                        <Text text="Assigned To" />
+                    </Column>
+                    <Column>
+                        <Text text="Team Size" />
+                    </Column>
+                </columns>
+
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <Text text="{TaskDataModel>projectID}" />
+                            <Text text="{TaskDataModel>number}" />
+                            <Text text="{TaskDataModel>projectName}" />
+                            <Text text="{TaskDataModel>description}" />
+                            <Text
+                                text="{ path: 'TaskDataModel>plannedStartDate', type:'sap.ui.model.type.Date', formatOptions:{style:'medium'}}"
+                            />
+                            <Text
+                                text="{ path: 'TaskDataModel>plannedEndDate', type:'sap.ui.model.type.Date', formatOptions:{style:'medium'}}"
+                            />
+                            <Text text="{TaskDataModel>status}" />
+                            <Text text="{TaskDataModel>assignedTo}" />
+                            <Text text="{TaskDataModel>teamSize}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </VBox>
+    </Page>
+</mvc:View>

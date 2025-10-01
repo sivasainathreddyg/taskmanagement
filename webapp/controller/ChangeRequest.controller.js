@@ -22,7 +22,7 @@ sap.ui.define([
         },
 
         onAddPress: function () {
-            this.openDialog(undefined,"Add");
+            this.openDialog(undefined, "Add");
         },
         readdata: function () {
             var oModel = this.getView().getModel();
@@ -114,32 +114,89 @@ sap.ui.define([
         onCreatePress: function () {
             var oEntry = this.getView().getModel("ChangeRequestModel").getData();
             var oModel = this.getView().getModel();
-            oEntry.onHoldcheck = sap.ui.getCore().byId("crOnHold").getSelected() ? "Y" : "N";
 
+           
+            var aRequiredFields = [
+                { id: "crNumber", value: oEntry.number, name: "Number" },
+                { id: "crChangeRequest", value: oEntry.changeRequest, name: "Change Request" },
+                { id: "crType", value: oEntry.type, name: "Type" },
+                { id: "crStatus", value: oEntry.status, name: "Status" },
+                { id: "crBA", value: oEntry.BA, name: "BA" },
+                { id: "crAssignedTo", value: oEntry.assignedTo, name: "Assigned To" },
+                { id: "crDescription", value: oEntry.description, name: "Description" }
+            ];
+
+            var bValid = true;
+            aRequiredFields.forEach(function (field) {
+                var oControl = sap.ui.getCore().byId(field.id);
+                if (!field.value || field.value.toString().trim() === "") {
+                    oControl.setValueState("Error");
+                    oControl.setValueStateText(field.name + " is required");
+                    bValid = false;
+                } else {
+                    oControl.setValueState("None");
+                }
+            });
+
+            if (!bValid) {
+                MessageToast.show("Please fill all required fields");
+                return;
+            }
+
+          
+            oEntry.onHoldcheck = sap.ui.getCore().byId("crOnHold").getSelected() ? "Y" : "N";
             var oVistex = sap.ui.getCore().byId("crVistex").getSelectedButton();
             oEntry.vistexcheck = oVistex.getSelected() ? oVistex.getText() : "No";
 
             oEntry.number = parseInt(oEntry.number, 10);
             var oDatePicker = sap.ui.getCore().byId("crCreateDate");
             if (oDatePicker.getDateValue()) {
-                oEntry.createDate = oDatePicker.getDateValue(); 
+                oEntry.createDate = oDatePicker.getDateValue();
             }
-
-            // oEntry.createDate = new Date();
             oEntry.updateDate = new Date();
-            oEntry.taskType = "CHG"
+            oEntry.taskType = "CHG";
+            const { isEditable, ...payload } = oEntry;
 
-            oModel.create("/TaskManagement", oEntry, {
-                success: function (odata) {
+            oModel.create("/TaskManagement", payload, {
+                success: function () {
                     MessageToast.show("Change Request created successfully");
                     this.oDialog.close();
                     this.readdata();
                 }.bind(this),
-                error: function (err) {
+                error: function () {
                     MessageBox.error("Creation failed");
                 }
             });
         },
+        // onCreatePress: function () {
+        //     var oEntry = this.getView().getModel("ChangeRequestModel").getData();
+        //     var oModel = this.getView().getModel();
+        //     oEntry.onHoldcheck = sap.ui.getCore().byId("crOnHold").getSelected() ? "Y" : "N";
+
+        //     var oVistex = sap.ui.getCore().byId("crVistex").getSelectedButton();
+        //     oEntry.vistexcheck = oVistex.getSelected() ? oVistex.getText() : "No";
+
+        //     oEntry.number = parseInt(oEntry.number, 10);
+        //     var oDatePicker = sap.ui.getCore().byId("crCreateDate");
+        //     if (oDatePicker.getDateValue()) {
+        //         oEntry.createDate = oDatePicker.getDateValue(); 
+        //     }
+
+        //     // oEntry.createDate = new Date();
+        //     oEntry.updateDate = new Date();
+        //     oEntry.taskType = "CHG"
+
+        //     oModel.create("/TaskManagement", oEntry, {
+        //         success: function (odata) {
+        //             MessageToast.show("Change Request created successfully");
+        //             this.oDialog.close();
+        //             this.readdata();
+        //         }.bind(this),
+        //         error: function (err) {
+        //             MessageBox.error("Creation failed");
+        //         }
+        //     });
+        // },
         // onDeletePress: function () {
         //     var oTable = this.byId("changeRequestTable");
         //     var oSelected = oTable.getSelectedItem();

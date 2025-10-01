@@ -1,0 +1,52 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <Dialog
+        id="Employeemanagement"
+        title="PRCDefects"
+    >
+        <VBox class="sapUiSmallMargin">
+            <Label text="ID" />
+            <Input
+                id="eidInput"
+                value="{EmployeeModel>/id}"
+                 editable="{= ${dialogMode>/dialogMode} === 'Add'}"
+            />
+
+            <Label text="Name" />
+            <Input
+                id="nameInput"
+                value="{EmployeeModel>/name}"
+                placeholder="Enter name"
+            />
+
+            <Label text="Email" />
+            <Input
+                id="emailInput"
+                value="{EmployeeModel>/email}"
+                placeholder="Enter email"
+            />
+
+            <Label text="Admin" />
+            <Input
+                id="adminInput"
+                value="{EmployeeModel>/admin}"
+                placeholder="Y/N"
+            />
+        </VBox>
+
+        <beginButton>
+            <Button
+                text="Save"
+                press="onCreateupdatePress"
+            />
+        </beginButton>
+        <endButton>
+            <Button
+                text="Cancel"
+                press="onCancelPress"
+            />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

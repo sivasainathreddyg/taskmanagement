@@ -8,7 +8,7 @@
     >
         <VBox class="sapUiSmallMargin">
             <!-- Number -->
-            <Label text="Number" />
+            <Label text="Number" required="true" />
             <Input
                 id="IcrNumber"
                 type="Number"
@@ -17,14 +17,14 @@
             />
 
             <!-- Change Request -->
-            <Label text="Incidents" />
+            <Label text="Incidents" required="true"/>
             <Input
                 id="incidents"
                 value="{IncidentModel>/changeRequest}"
             />
 
             <!-- Type -->
-            <Label text="Type" />
+            <Label text="Type" required="true"/>
             <Select
                 id="IcrType"
                 selectedKey="{IncidentModel>/type}"
@@ -52,7 +52,7 @@
             </Select>
 
             <!-- Status (Hardcoded) -->
-            <Label text="Status" />
+            <Label text="Status" required="true"/>
             <Select
                 id="IcrStatus"
                 selectedKey="{IncidentModel>/status}"
@@ -83,21 +83,21 @@
                 />
             </Select>
             <!-- BA (Input instead of dropdown) -->
-            <Label text="BA" />
+            <Label text="BA" required="true"/>
             <Input
                 id="IcrBA"
                 value="{IncidentModel>/BA}"
             />
 
             <!-- Assigned To (Input instead of dropdown) -->
-            <Label text="Assigned To" />
+            <Label text="Assigned To" required="true"/>
             <Input
                 id="IcrAssignedTo"
                 value="{IncidentModel>/assignedTo}"
             />
 
             <!-- Description -->
-            <Label text="Description" />
+            <Label text="Description" required="true"/>
             <TextArea
                 id="IcrDescription"
                 value="{IncidentModel>/description}"

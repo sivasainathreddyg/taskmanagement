@@ -8,7 +8,7 @@
     >
         <VBox class="sapUiSmallMargin">
             <!-- Number -->
-            <Label text="Number" />
+            <Label text="Number" required="true"/>
             <Input
                 id="crNumber"
                 type="Number"
@@ -17,17 +17,18 @@
             />
 
             <!-- Change Request -->
-            <Label text="Change Request" />
+            <Label text="Change Request" required="true"/>
             <Input
                 id="crChangeRequest"
                 value="{ChangeRequestModel>/changeRequest}"
             />
 
             <!-- Type -->
-            <Label text="Type" />
+            <Label text="Type" required="true"/>
             <Select
                 id="crType"
                 selectedKey="{ChangeRequestModel>/type}"
+                width="100%"
             >
                 <core:Item
                     key=""
@@ -52,10 +53,11 @@
             </Select>
 
             <!-- Status (Hardcoded) -->
-            <Label text="Status" />
+            <Label text="Status" required="true"/>
             <Select
                 id="crStatus"
                 selectedKey="{ChangeRequestModel>/status}"
+                width="100%"
             >
                 <core:Item
                     key=""
@@ -83,21 +85,21 @@
                 />
             </Select>
             <!-- BA (Input instead of dropdown) -->
-            <Label text="BA" />
+            <Label text="BA" required="true"/>
             <Input
                 id="crBA"
                 value="{ChangeRequestModel>/BA}"
             />
 
             <!-- Assigned To (Input instead of dropdown) -->
-            <Label text="Assigned To" />
+            <Label text="Assigned To" required="true"/>
             <Input
                 id="crAssignedTo"
                 value="{ChangeRequestModel>/assignedTo}"
             />
 
             <!-- Description -->
-            <Label text="Description" />
+            <Label text="Description" required="true"/>
             <TextArea
                 id="crDescription"
                 value="{ChangeRequestModel>/description}"

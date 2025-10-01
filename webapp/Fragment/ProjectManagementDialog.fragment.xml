@@ -13,7 +13,7 @@
                 type="Number"
                 value="{ProjectModel>/projectID}"
                  editable="{= ${ProjectModel>/isEditable} }"
-                placeholder="Auto-generated"
+                
             />
 
             <Label text="Number" />
@@ -22,7 +22,7 @@
                 type="Number"
                 value="{ProjectModel>/number}"
                   editable="{= ${ProjectModel>/isEditable} }"
-                placeholder="Auto-generated"
+              
             />
 
             <Label text="Project Name" />

@@ -16,7 +16,7 @@ sap.ui.define([
         },
 
         onAddPress: function () {
-           this.openDialog(undefined,"Add");
+            this.openDialog(undefined, "Add");
         },
         onAfterRendering: function () {
             this.readdata()
@@ -114,8 +114,37 @@ sap.ui.define([
         onCreatePress: function () {
             var oEntry = this.getView().getModel("IncidentModel").getData();
             var oModel = this.getView().getModel();
-            oEntry.onHoldcheck = sap.ui.getCore().byId("IcrOnHold").getSelected() ? "Y" : "N";
 
+         
+            var aRequiredFields = [
+                { id: "IcrNumber", value: oEntry.number, name: "Number" },
+                { id: "incidents", value: oEntry.changeRequest, name: "Incidents" },
+                { id: "IcrType", value: oEntry.type, name: "Type" },
+                { id: "IcrStatus", value: oEntry.status, name: "Status" },
+                { id: "IcrBA", value: oEntry.BA, name: "BA" },
+                { id: "IcrAssignedTo", value: oEntry.assignedTo, name: "Assigned To" },
+                { id: "IcrDescription", value: oEntry.description, name: "Description" }
+            ];
+
+            var bValid = true;
+            aRequiredFields.forEach(function (field) {
+                var oControl = sap.ui.getCore().byId(field.id);
+                if (!field.value || field.value.toString().trim() === "") {
+                    oControl.setValueState("Error");
+                    oControl.setValueStateText(field.name + " is required");
+                    bValid = false;
+                } else {
+                    oControl.setValueState("None");
+                }
+            });
+
+            if (!bValid) {
+                MessageToast.show("Please fill all required fields");
+                return;
+            }
+
+            
+            oEntry.onHoldcheck = sap.ui.getCore().byId("IcrOnHold").getSelected() ? "Y" : "N";
             var oVistex = sap.ui.getCore().byId("IcrVistex").getSelectedButton();
             oEntry.vistexcheck = oVistex.getSelected() ? oVistex.getText() : "No";
 
@@ -124,22 +153,50 @@ sap.ui.define([
             if (oDatePicker.getDateValue()) {
                 oEntry.createDate = oDatePicker.getDateValue();
             }
-
-            // oEntry.createDate = new Date();
             oEntry.updateDate = new Date();
-            oEntry.taskType = "INC"
+            oEntry.taskType = "INC"; 
 
+         
             oModel.create("/TaskManagement", oEntry, {
-                success: function (odata) {
-                    MessageToast.show(" Incidents created successfully");
+                success: function () {
+                    MessageToast.show("Incident created successfully");
                     this.oDialog.close();
                     this.readdata();
                 }.bind(this),
-                error: function (err) {
+                error: function () {
                     MessageBox.error("Creation failed");
                 }
             });
         },
+        // onCreatePress: function () {
+        //     var oEntry = this.getView().getModel("IncidentModel").getData();
+        //     var oModel = this.getView().getModel();
+        //     oEntry.onHoldcheck = sap.ui.getCore().byId("IcrOnHold").getSelected() ? "Y" : "N";
+
+        //     var oVistex = sap.ui.getCore().byId("IcrVistex").getSelectedButton();
+        //     oEntry.vistexcheck = oVistex.getSelected() ? oVistex.getText() : "No";
+
+        //     oEntry.number = parseInt(oEntry.number, 10);
+        //     var oDatePicker = sap.ui.getCore().byId("ICreateDate");
+        //     if (oDatePicker.getDateValue()) {
+        //         oEntry.createDate = oDatePicker.getDateValue();
+        //     }
+
+        //     // oEntry.createDate = new Date();
+        //     oEntry.updateDate = new Date();
+        //     oEntry.taskType = "INC"
+
+        //     oModel.create("/TaskManagement", oEntry, {
+        //         success: function (odata) {
+        //             MessageToast.show(" Incidents created successfully");
+        //             this.oDialog.close();
+        //             this.readdata();
+        //         }.bind(this),
+        //         error: function (err) {
+        //             MessageBox.error("Creation failed");
+        //         }
+        //     });
+        // },
         // onDeletePress: function () {
         //     var oTable = this.byId("Incidents");
         //     var oSelected = oTable.getSelectedItem();

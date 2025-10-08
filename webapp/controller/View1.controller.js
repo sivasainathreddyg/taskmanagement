@@ -26,7 +26,11 @@ sap.ui.define([
         },
         onProjectsPress: function () {
             that.component.navTo("Projects");
+        },
+        onDashboardPress: function () {
+            that.component.navTo("Dashboard");
         }
+
 
     });
 });

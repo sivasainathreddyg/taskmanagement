@@ -18,32 +18,69 @@
                 header="Employees Management"
                 press="onEmployeesPress"
                 class="sapUiSmallMargin"
-            />
+            >
+                <TileContent
+                    footer="Add new employee or update the existing employee"
+                >
+                    <ImageContent src="sap-icon://add-employee" />
+                </TileContent>
+            </GenericTile>
+
             <GenericTile
                 header="Incidents"
                 press="onIncidentsPress"
                 class="sapUiSmallMargin"
-            />
+            >
+                <TileContent
+                    footer="Add new Incidents or update the existing Incidents"
+                >
+                    <ImageContent src="sap-icon://incident" />
+                </TileContent>
+            </GenericTile>
             <GenericTile
                 header="Change Request"
                 press="onChangeRequestPress"
                 class="sapUiSmallMargin"
-            />
+            >
+                <TileContent
+                    footer="Add new Change Request or update the existing Change Request"
+                >
+                    <ImageContent src="sap-icon://request" />
+                </TileContent>
+            </GenericTile>
             <GenericTile
                 header="PRC Defects"
                 press="onPRCDefectsPress"
                 class="sapUiSmallMargin"
-            />
+            >
+                <TileContent
+                    footer="Add new Defects or update the existing Defects"
+                >
+                    <ImageContent src="sap-icon://quality-issue" />
+                </TileContent>
+            </GenericTile>
             <GenericTile
                 header="Projects"
                 press="onProjectsPress"
                 class="sapUiSmallMargin"
-            />
+            >
+                <TileContent
+                    footer="Add new Projects or update the existing Projects"
+                >
+                    <ImageContent src="sap-icon://add-product" />
+                </TileContent>
+            </GenericTile>
             <GenericTile
                 header="Dashboard"
                 press="onDashboardPress"
                 class="sapUiSmallMargin"
-            />
+            >
+                <TileContent
+                    footer="To show data in the charts"
+                >
+                    <ImageContent src="sap-icon://bbyd-dashboard" />
+                </TileContent>
+            </GenericTile>
         </FlexBox>
     </Page>
 </mvc:View>

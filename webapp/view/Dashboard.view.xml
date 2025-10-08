@@ -1,0 +1,137 @@
+<mvc:View
+    controllerName="com.taskmanagement.taskmanagement.controller.Dashboard"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:viz.data="sap.viz.ui5.data"
+    xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+>
+    <Page
+        title="Project Management"
+        showNavButton="true"
+        width="250px"
+        navButtonPress="onpresshome"
+    >
+        <Toolbar>
+            <!-- Task Type -->
+            <ToolbarSpacer />
+            <ComboBox
+                id="taskTypeCombo"
+                selectionChange="onTaskTypeChange"
+                placeholder="Task Type"
+            >
+                <items>
+                    <core:Item
+                        key="INC"
+                        text="Incident"
+                    />
+                    <core:Item
+                        key="CHG"
+                        text="Change Request"
+                    />
+                    <core:Item
+                        key="DEF"
+                        text="PRC Defect"
+                    />
+                </items>
+            </ComboBox>
+
+            <!-- <ComboBox
+                id="employeeCombo"
+                items="{employeeModel>/Employee}"
+            >
+                <core:Item
+                    key="{employeeModel>id}"
+                    text="{employeeModel>name}"
+                />
+            </ComboBox> -->
+            <MultiComboBox
+                id="employeeMultiCombo"
+                selectionChange="onEmployeeSelectionChange"
+                placeholder="Select Employees"
+                width="250px"
+                items="{employeeModel>/Employee}"
+            >
+                <core:Item
+                    key="{employeeModel>id}"
+                    text="{employeeModel>name}"
+                />
+            </MultiComboBox>
+            <ComboBox
+                id="chartTypeCombo"
+                selectedKey="Type"
+                width="250px"
+            >
+                <items>
+                    <core:Item
+                        key="Type"
+                        text="Type"
+                    />
+                    <core:Item
+                        key="Status"
+                        text="Status"
+                    />
+                </items>
+            </ComboBox>
+
+            <!-- Date Pickers -->
+            <DatePicker
+                width="250px"
+                id="startDatePicker"
+                placeholder="Start Date"
+            />
+            <DatePicker
+                width="250px"
+                id="endDatePicker"
+                placeholder="End Date"
+            />
+
+            <!-- Apply Button -->
+            <Button
+                width="100px"
+                text="Apply Filter"
+                press="onApplyFilter"
+            />
+        </Toolbar>
+
+        <!-- Bar Chart: Type -->
+        <viz:VizFrame
+            id="mainChart"
+            width="100%"
+            height="400px"
+            uiConfig="{applicationSet:'fiori'}"
+            vizType="column"
+        >
+            <viz:dataset>
+                <viz.data:FlattenedDataset data="{chartModel>/chartData}">
+                    <viz.data:dimensions>
+                        <viz.data:DimensionDefinition
+                            name="Dimension"
+                            value="{dimension}"
+                        />
+                    </viz.data:dimensions>
+                    <viz.data:measures>
+                        <viz.data:MeasureDefinition
+                            name="Count"
+                            value="{count}"
+                        />
+                    </viz.data:measures>
+                </viz.data:FlattenedDataset>
+            </viz:dataset>
+
+            <viz:feeds>
+                <viz.feeds:FeedItem
+                    uid="valueAxis"
+                    type="Measure"
+                    values="Count"
+                />
+                <viz.feeds:FeedItem
+                    uid="categoryAxis"
+                    type="Dimension"
+                    values="Dimension"
+                />
+            </viz:feeds>
+        </viz:VizFrame>
+    </Page>
+</mvc:View>

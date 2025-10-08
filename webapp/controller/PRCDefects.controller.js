@@ -7,15 +7,34 @@ sap.ui.define([
     "sap/ui/model/FilterOperator"
 ], function (Controller, MessageToast, MessageBox, JSONModel, Filter, FilterOperator) {
     "use strict";
+      var that = this;
 
     return Controller.extend("com.taskmanagement.taskmanagement.controller.PRCDefects", {
 
         onInit: function () {
             this.router = this.getOwnerComponent().getRouter();
+            that.Email = sap.ushell.Container.getService("UserInfo").getEmail();
+            // that.Email="test@gmail.com"
+        },
+        getemployeename: function (sEmail) {
+            var oModel = this.getView().getModel();
+            var oFilter = new sap.ui.model.Filter("email", sap.ui.model.FilterOperator.EQ, sEmail);
+            oModel.read("/Employee", {
+                filters: [oFilter],
+                success: function (odata) {
+                    if (odata.results.length > 0) {
+                        that.empname = odata.results[0].name;
+                    }
+                }.bind(this),
+                error: function (err) {
+                    MessageBox.error("Failed to read Employee data");
+                }
+            })
         },
 
         onAfterRendering: function () {
             this.readdata();
+            this.getemployeename(that.Email)
         },
 
         onrefreshPress: function () {
@@ -112,6 +131,7 @@ sap.ui.define([
 
         onCreatePress: function () {
             var oEntry = this.getView().getModel("PRCDefectsModel").getData();
+            oEntry.createdUser =  that.empname;
             var oModel = this.getView().getModel();
 
             // --- Required fields ---

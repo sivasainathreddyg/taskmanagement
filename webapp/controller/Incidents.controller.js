@@ -2,8 +2,9 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/m/MessageToast",
     "sap/m/MessageBox",
-    "sap/ui/model/json/JSONModel"
-], function (Controller, MessageToast, MessageBox, JSONModel) {
+    "sap/ui/model/json/JSONModel",
+    "sap/ui/core/Fragment"
+], function (Controller, MessageToast, MessageBox, JSONModel, Fragment) {
     "use strict";
     var that = this;
 
@@ -11,15 +12,34 @@ sap.ui.define([
 
         onInit: function () {
             that.component = this.getOwnerComponent().getRouter().initialize();
+            that.Email = sap.ushell.Container.getService("UserInfo").getEmail();
+            // that.Email = "saipavanbassa@sbpcorp.com"
+
             var oTable = this.byId("Incidents");
             oTable.setModel(this.getView().getModel());
+        },
+        getemployeename: function (sEmail) {
+            var oModel = this.getView().getModel();
+            var oFilter = new sap.ui.model.Filter("email", sap.ui.model.FilterOperator.EQ, sEmail);
+            oModel.read("/Employee", {
+                filters: [oFilter],
+                success: function (odata) {
+                    if (odata.results.length > 0) {
+                        that.empname = odata.results[0].name;
+                    }
+                }.bind(this),
+                error: function (err) {
+                    MessageBox.error("Failed to read Employee data");
+                }
+            })
         },
 
         onAddPress: function () {
             this.openDialog(undefined, "Add");
         },
         onAfterRendering: function () {
-            this.readdata()
+            this.readdata();
+            this.getemployeename(that.Email)
         },
         onrefreshPress: function () {
             this.readdata();
@@ -54,29 +74,61 @@ sap.ui.define([
         },
 
 
+        // openDialog: function (oData, sMode) {
+        //     var oModel = new sap.ui.model.json.JSONModel(oData || {});
+        //     this.getView().setModel(oModel, "IncidentModel");
+
+        //     if (!this.oDialog) {
+        //         this.oDialog = sap.ui.xmlfragment(
+        //             "com.taskmanagement.taskmanagement.Fragment.IncidentDialog",
+        //             this
+        //         );
+        //         this.getView().addDependent(this.oDialog);
+        //     }
+        //     var oBtn = this.oDialog.getBeginButton();
+        //     if (sMode === "Add") {
+        //         oBtn.setText("Save");
+        //         oModel.setData({ isEditable: true });
+        //     } else if (sMode === "Edit") {
+        //         oBtn.setText("Update");
+        //         oModel.setData({ ...oData, isEditable: false });
+        //     }
+
+        //     this.oDialog.bindElement("IncidentModel>/");
+
+        //     this.oDialog.open();
+        // },
         openDialog: function (oData, sMode) {
             var oModel = new sap.ui.model.json.JSONModel(oData || {});
             this.getView().setModel(oModel, "IncidentModel");
 
-            if (!this.oDialog) {
-                this.oDialog = sap.ui.xmlfragment(
-                    "com.taskmanagement.taskmanagement.Fragment.IncidentDialog",
-                    this
-                );
-                this.getView().addDependent(this.oDialog);
+            if (!this.IoDialog) {
+                Fragment.load({
+                    id: this.getView().getId(),
+                    name: "com.taskmanagement.taskmanagement.Fragment.IncidentDialog",
+                    controller: this
+                }).then(function (oDialog) {
+                    this.IoDialog = oDialog;
+                    this.getView().addDependent(oDialog);
+                    this.setupDialog(oModel, sMode);
+                    this.IoDialog.open();
+                }.bind(this));
+            } else {
+                this.setupDialog(oModel, sMode);
+                this.IoDialog.open();
             }
-            var oBtn = this.oDialog.getBeginButton();
+        },
+
+        setupDialog: function (oModel, sMode) {
+            var oBtn = this.IoDialog.getBeginButton();
             if (sMode === "Add") {
                 oBtn.setText("Save");
                 oModel.setData({ isEditable: true });
             } else if (sMode === "Edit") {
                 oBtn.setText("Update");
-                oModel.setData({ ...oData, isEditable: false });
+                oModel.setData({ ...oModel.getData(), isEditable: false });
             }
-
-            this.oDialog.bindElement("IncidentModel>/");
-
-            this.oDialog.open();
+            this.IoDialog.bindElement("IncidentModel>/");
         },
         onCreateupdatePress: function (oevent) {
             var btntext = oevent.getSource().getText();
@@ -91,8 +143,8 @@ sap.ui.define([
             var oEntry = this.getView().getModel("IncidentModel").getData();
             var oModel = this.getView().getModel();
 
-            oEntry.onHoldcheck = sap.ui.getCore().byId("IcrOnHold").getSelected() ? "Y" : "N";
-            var oVistex = sap.ui.getCore().byId("IcrVistex").getSelectedButton();
+            oEntry.onHoldcheck = this.byId("IcrOnHold").getSelected() ? "Y" : "N";
+            var oVistex =this.byId("IcrVistex").getSelectedButton();
             oEntry.vistexcheck = oVistex.getSelected() ? oVistex.getText() : "No";
 
             oEntry.updateDate = new Date();
@@ -102,7 +154,7 @@ sap.ui.define([
             oModel.update("/TaskManagement(" + oEntry.number + ")", payload, {
                 success: function () {
                     MessageToast.show("Incidents updated successfully");
-                    this.oDialog.close();
+                    this.IoDialog.close();
                     this.readdata();
                 }.bind(this),
                 error: function () {
@@ -128,7 +180,7 @@ sap.ui.define([
 
             var bValid = true;
             aRequiredFields.forEach(function (field) {
-                var oControl = sap.ui.getCore().byId(field.id);
+                var oControl =this.byId(field.id);
                 if (!field.value || field.value.toString().trim() === "") {
                     oControl.setValueState("Error");
                     oControl.setValueStateText(field.name + " is required");
@@ -136,7 +188,7 @@ sap.ui.define([
                 } else {
                     oControl.setValueState("None");
                 }
-            });
+            },this);
 
             if (!bValid) {
                 MessageToast.show("Please fill all required fields");
@@ -144,24 +196,25 @@ sap.ui.define([
             }
 
 
-            oEntry.onHoldcheck = sap.ui.getCore().byId("IcrOnHold").getSelected() ? "Y" : "N";
-            var oVistex = sap.ui.getCore().byId("IcrVistex").getSelectedButton();
+            oEntry.onHoldcheck = this.byId("IcrOnHold").getSelected() ? "Y" : "N";
+            var oVistex = this.byId("IcrVistex").getSelectedButton();
             oEntry.vistexcheck = oVistex.getSelected() ? oVistex.getText() : "No";
 
             oEntry.number = parseInt(oEntry.number, 10);
-            var oDatePicker = sap.ui.getCore().byId("ICreateDate");
+            var oDatePicker = this.byId("ICreateDate");
             if (oDatePicker.getDateValue()) {
                 oEntry.createDate = oDatePicker.getDateValue();
             }
             oEntry.updateDate = new Date();
             oEntry.taskType = "INC";
+            oEntry.createdUser = that.empname;
             const { isEditable, ...payload } = oEntry;
 
 
             oModel.create("/TaskManagement", payload, {
                 success: function () {
                     MessageToast.show("Incident created successfully");
-                    this.oDialog.close();
+                    this.IoDialog.close();
                     this.readdata();
                 }.bind(this),
                 error: function () {
@@ -237,7 +290,7 @@ sap.ui.define([
         },
 
         onCancelPress: function () {
-            this.oDialog.close();
+            this.IoDialog.close();
         },
         onpresshome: function () {
             that.component.navTo("RouteView1");

@@ -131,11 +131,11 @@
                 <buttons>
                     <RadioButton
                         text="Yes"
-                        key="Yes"
+                        
                     />
                     <RadioButton
                         text="No"
-                        key="No"
+                      
                     />
                 </buttons>
             </RadioButtonGroup>

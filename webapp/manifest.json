@@ -62,7 +62,8 @@
       "minUI5Version": "1.140.0",
       "libs": {
         "sap.m": {},
-        "sap.ui.core": {}
+        "sap.ui.core": {},
+        "sap.viz": {}
       }
     },
     "contentDensities": {
@@ -143,6 +144,13 @@
           "target": [
             "Projects"
           ]
+        },
+        {
+          "name": "Dashboard",
+          "pattern": "Dashboard",
+          "target": [
+            "Dashboard"
+          ]
         }
       ],
       "targets": {
@@ -169,6 +177,10 @@
         "Projects": {
           "id": "Projects",
           "name": "Projects"
+        },
+        "Dashboard": {
+          "id": "Dashboard",
+          "name": "Dashboard"
         }
       }
     },

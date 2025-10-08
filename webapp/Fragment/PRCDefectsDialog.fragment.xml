@@ -7,21 +7,30 @@
         title="PRCDefects"
     >
         <VBox class="sapUiSmallMargin">
-            <Label text="ID" required="true"/>
+            <Label
+                text="ID"
+                required="true"
+            />
             <Input
                 id="idInput"
                 type="Number"
                 value="{PRCDefectsModel>/id}"
                 editable="{= ${PRCDefectsModel>/isEditable} }"
             />
-            <Label text="Title"  required="true"/>
+            <Label
+                text="Title"
+                required="true"
+            />
             <Input
                 id="titleInput"
                 value="{PRCDefectsModel>/title}"
                 placeholder="Enter title"
             />
 
-            <Label text="Description"  required="true"/>
+            <Label
+                text="Description"
+                required="true"
+            />
             <TextArea
                 id="descriptionInput"
                 value="{PRCDefectsModel>/description}"
@@ -29,34 +38,120 @@
                 width="100%"
             />
 
-            <Label text="Assigned To"  required="true"/>
+            <Label
+                text="Assigned To"
+                required="true"
+            />
             <Input
                 id="assignedToInput"
                 value="{PRCDefectsModel>/assignedTo}"
                 placeholder="Assigned To"
             />
 
-            <Label text="Priority"  required="true"/>
+            <!-- <Label
+                text="Priority"
+                required="true"
+            />
             <Input
                 id="priorityInput"
                 value="{PRCDefectsModel>/priority}"
                 placeholder="Priority"
+            /> -->
+            <Label
+                text="Priority"
+                required="true"
             />
+            <Select
+                id="priorityInput"
+                selectedKey="{PRCDefectsModel>/priority}"
+                width="100%"
+            >
+                <core:Item
+                    key=""
+                    text="-- Select Priority --"
+                />
+                <core:Item
+                    key="Critical"
+                    text="Critical"
+                />
+                <core:Item
+                    key="High"
+                    text="High"
+                />
+                <core:Item
+                    key="Medium"
+                    text="Medium"
+                />
+                <core:Item
+                    key="Low"
+                    text="Low"
+                />
+            </Select>
 
-            <Label text="Status"  required="true"/>
+            <!-- <Label text="Status"  required="true"/>
             <Input
                 id="statusInput"
                 value="{PRCDefectsModel>/status}"
                 placeholder="Status"
+            /> -->
+            <Label
+                text="Status"
+                required="true"
             />
+            <Select
+                id="statusInput"
+                selectedKey="{PRCDefectsModel>/status}"
+                width="100%"
+            >
+                <core:Item
+                    key=""
+                    text="-- Select Status --"
+                />
+                <core:Item
+                    key="Pending"
+                    text="Pending"
+                />
+                <core:Item
+                    key="Open"
+                    text="Open"
+                />
+                <core:Item
+                    key="InProgress"
+                    text="InProgress"
+                />
+                <core:Item
+                    key="Closed"
+                    text="Closed"
+                />
+                <core:Item
+                    key="Canceled"
+                    text="Canceled"
+                />
+            </Select>
 
-            <Label text="Effort"  required="true"/>
-            <Input
-                id="effortInput"
-                value="{PRCDefectsModel>/effort}"
-                placeholder="Effort"
-                type="Number"
+            <Label
+                text="Effort"
+                required="true"
             />
+           
+             <Select
+                id="effortInput"
+                selectedKey="{PRCDefectsModel>/effort}"
+                width="100%"
+            >
+                <core:Item
+                    key=""
+                    text="-- Select effort --"
+                />
+                <core:Item
+                    key="High > 40 Hrs"
+                    text="High > 40 Hrs"
+                />
+                <core:Item
+                    key= "Low &lt; 16 Hrs"
+                    text="Low &lt; 16 Hrs"
+                />
+            </Select>
 
             <Label text="Resolution" />
             <Input
@@ -65,7 +160,10 @@
                 placeholder="Resolution"
             />
 
-            <Label text="Created Date"  required="true"/>
+            <Label
+                text="Created Date"
+                required="true"
+            />
             <DatePicker
                 id="createdDateInput"
                 value="{PRCDefectsModel>/createdDate}"
@@ -73,7 +171,10 @@
                 displayFormat="long"
             />
 
-            <Label text="Created By"  required="true"/>
+            <Label
+                text="Created By"
+                required="true"
+            />
             <Input
                 id="createdByInput"
                 value="{PRCDefectsModel>/createdBy}"

@@ -5,14 +5,14 @@
     xmlns:core="sap.ui.core"
 >
     <Page
-        title="Employee Management"
+        title="Employees Management"
         showNavButton="true"
         navButtonPress="onpresshome"
     >
         <VBox class="sapUiSmallMargin">
             <Toolbar>
                 <Title
-                    text="Employee Management"
+                    text=""
                     level="H2"
                 />
                 <ToolbarSpacer />
@@ -60,6 +60,9 @@
                     <Column>
                         <Text text="Admin" />
                     </Column>
+                    <Column>
+                        <Text text="Role" />
+                    </Column>
                 </columns>
 
                 <items>
@@ -68,7 +71,8 @@
                             <Text text="{TaskDataModel>id}" />
                             <Text text="{TaskDataModel>name}" />
                             <Text text="{TaskDataModel>email}" />
-                            <Text text="{TaskDataModel>admin}" />
+                            <Text text="{= ${TaskDataModel>admin} === 'Y' ? 'Yes' : 'No' }" />
+                            <Text text="{=${TaskDataModel>role} === 'D' ? 'Developer' : 'Analyst'}"/>
                         </cells>
                     </ColumnListItem>
                 </items>

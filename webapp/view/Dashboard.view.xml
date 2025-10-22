@@ -8,11 +8,19 @@
     xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
 >
     <Page
-        title="Project Management"
+        title="Dashboard"
         showNavButton="true"
-        width="250px"
         navButtonPress="onpresshome"
     >
+        <!-- <headerContent>
+            <Button
+                text="Show Summary"
+                press="onShowSummary"
+                width="150px"
+                type="Emphasized"
+                class="sapUiTinyMarginBottom"
+            />
+        </headerContent> -->
         <Toolbar>
             <!-- Task Type -->
             <ToolbarSpacer />
@@ -22,6 +30,10 @@
                 placeholder="Task Type"
             >
                 <items>
+                    <core:Item
+                        key="All"
+                        text="Summary"
+                    />
                     <core:Item
                         key="INC"
                         text="Incident"
@@ -95,6 +107,54 @@
             />
         </Toolbar>
 
+        <viz:VizFrame
+            id="summaryChart"
+            uiConfig="{applicationSet:'fiori'}"
+            height="400px"
+            width="100%"
+            vizType="pie"
+            visible="false"
+            vizProperties="{
+		   plotArea:{
+                            dataLabel:{visible: true, type:'value'}, drawingEffect: 'glossy' 
+			    },
+                            title : {text:'Count'}
+		    }"
+            selectData="myOnClickHandler"
+         
+            renderComplete="handleRenderComplete"
+        >
+            <viz:dataset>
+                <viz.data:FlattenedDataset data="{summaryModel>/summaryData}">
+                    <viz.data:dimensions>
+                        <viz.data:DimensionDefinition
+                            name="category"
+                            value="{summaryModel>category}"
+                        />
+                    </viz.data:dimensions>
+                    <viz.data:measures>
+                        <viz.data:MeasureDefinition
+                            name="count"
+                            value="{summaryModel>count}"
+                        />
+                    </viz.data:measures>
+                </viz.data:FlattenedDataset>
+            </viz:dataset>
+
+            <viz:feeds>
+                <viz.feeds:FeedItem
+                    uid="size"
+                    type="Measure"
+                    values="count"
+                />
+                <viz.feeds:FeedItem
+                    uid="color"
+                    type="Dimension"
+                    values="category"
+                />
+            </viz:feeds>
+        </viz:VizFrame>
+
         <!-- Bar Chart: Type -->
         <viz:VizFrame
             id="mainChart"
@@ -114,7 +174,7 @@
                     <viz.data:measures>
                         <viz.data:MeasureDefinition
                             name="Count"
-                            value="{count}"
+                            value="{= parseInt(${count}) }"
                         />
                     </viz.data:measures>
                 </viz.data:FlattenedDataset>

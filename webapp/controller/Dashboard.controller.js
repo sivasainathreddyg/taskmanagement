@@ -15,14 +15,143 @@ sap.ui.define([
         onInit: function () {
             this.router = this.getOwnerComponent().getRouter();
             // that.Email = sap.ushell.Container.getService("UserInfo").getEmail();
-            that.Email = "test@gmail.com"
+            // that.Email = "test@gmail.com"
         },
         onAfterRendering: function () {
+            that.busyDialog = new sap.m.BusyDialog();
             this.onemployeedataread();
         },
+        onTaskTypeChange: function (oEvent) {
+            var sSelectedKey = oEvent.getParameter("selectedItem").getKey();
+            var oChartTypeCombo = this.byId("chartTypeCombo");
+            var oemployeeMultiCombo = this.byId("employeeMultiCombo");
 
+            if (sSelectedKey === "INC") {
+                oChartTypeCombo.setSelectedKey("Status");
+                oChartTypeCombo.setVisible(false);
+                oemployeeMultiCombo.setVisible(true);
+            } else if (sSelectedKey === "All") {
+                oemployeeMultiCombo.setVisible(false);
+                oChartTypeCombo.setVisible(false);
+            } else {
+                oChartTypeCombo.setVisible(true);
+                oemployeeMultiCombo.setVisible(true);
+                // oChartTypeCombo.setSelectedKey("Type");
+            }
+        },
+        onShowSummary: function (oDateFrom, oDateTo) {
+            var oView = this.getView();
+            var oModel = oView.getModel();
+
+            // Hide main chart, show summary chart
+            oView.byId("mainChart").setVisible(false);
+            oView.byId("summaryChart").setVisible(true);
+
+            var summaryData = [];
+
+            // Prepare date filter
+            var dDateStart, dDateEnd;
+            if (oDateFrom && oDateTo) {
+                dDateStart = new Date(oDateFrom);
+                dDateEnd = new Date(oDateTo);
+                dDateStart.setHours(0, 0, 0, 0);
+                dDateEnd.setHours(23, 59, 59, 999);
+            }
+
+            // --- TASK MANAGEMENT: Incidents ---
+            var aIncFilters = [new sap.ui.model.Filter("taskType", sap.ui.model.FilterOperator.EQ, "INC")];
+            if (dDateStart && dDateEnd) {
+                aIncFilters.push(new sap.ui.model.Filter({
+                    path: "createDate",
+                    operator: sap.ui.model.FilterOperator.BT,
+                    value1: dDateStart,
+                    value2: dDateEnd
+                }));
+            }
+
+            oModel.read("/TaskManagement", {
+                filters: aIncFilters,
+                success: function (oData) {
+                    summaryData.push({ category: "Incidents", count: oData.results.length });
+
+                    // --- TASK MANAGEMENT: Change Requests ---
+                    var aChgFilters = [new sap.ui.model.Filter("taskType", sap.ui.model.FilterOperator.EQ, "CHG")];
+                    if (dDateStart && dDateEnd) {
+                        aChgFilters.push(new sap.ui.model.Filter({
+                            path: "createDate",
+                            operator: sap.ui.model.FilterOperator.BT,
+                            value1: dDateStart,
+                            value2: dDateEnd
+                        }));
+                    }
+
+                    oModel.read("/TaskManagement", {
+                        filters: aChgFilters,
+                        success: function (oData2) {
+                            summaryData.push({ category: "Change Requests", count: oData2.results.length });
+
+                            // --- PROJECT MANAGEMENT ---
+                            var aProjFilters = [];
+                            if (dDateStart && dDateEnd) {
+                                aProjFilters.push(new sap.ui.model.Filter({
+                                    path: "plannedStartDate",
+                                    operator: sap.ui.model.FilterOperator.BT,
+                                    value1: dDateStart,
+                                    value2: dDateEnd
+                                }));
+                            }
+
+                            oModel.read("/ProjectManagement", {
+                                filters: aProjFilters,
+                                success: function (oData3) {
+                                    summaryData.push({ category: "Projects", count: oData3.results.length });
+
+                                    // --- PRC DEFECTS ---
+                                    var aDefFilters = [];
+                                    if (dDateStart && dDateEnd) {
+                                        aDefFilters.push(new sap.ui.model.Filter({
+                                            path: "createdDate",
+                                            operator: sap.ui.model.FilterOperator.BT,
+                                            value1: dDateStart,
+                                            value2: dDateEnd
+                                        }));
+                                    }
+
+                                    oModel.read("/PRCDefects", {
+                                        filters: aDefFilters,
+                                        success: function (oData4) {
+                                            summaryData.push({ category: "PRC Defects", count: oData4.results.length });
+
+                                            // Set model for VizFrame
+                                            var oSummaryModel = new sap.ui.model.json.JSONModel({ summaryData });
+                                            oView.setModel(oSummaryModel, "summaryModel");
+
+                                            var oChart = oView.byId("summaryChart");
+                                            oChart.setVizProperties({
+                                                title: { text: "Summary of Tasks & Projects", visible: true },
+                                                legend: { visible: true, position: "right" },
+                                                plotArea: { dataLabel: { visible: true, formatString: "#,##0" } },
+                                                tooltip: { visible: true }
+                                            });
+                                            that.busyDialog.close()
+                                        },
+                                        error: function () { sap.m.MessageToast.show("Failed to load PRC Defects"); that.busyDialog.close() }
+                                    });
+                                },
+                                error: function () { sap.m.MessageToast.show("Failed to load Projects"); that.busyDialog.close() }
+                            });
+                        },
+                        error: function () { sap.m.MessageToast.show("Failed to load Change Requests"); that.busyDialog.close() }
+                    });
+                },
+                error: function () { sap.m.MessageToast.show("Failed to load Incidents"); that.busyDialog.close() }
+            });
+        },
 
         onApplyFilter: function () {
+            that.busyDialog.open();
+            this.byId("summaryChart").setVisible(false);
+            this.byId("mainChart").setVisible(true);
             that.oView = this.getView();
             that.oModel = that.oView.getModel();
             // if (that.count === 1) {
@@ -34,11 +163,17 @@ sap.ui.define([
             }
 
             const taskType = oView.byId("taskTypeCombo").getSelectedKey();
+
             // let employeeId = oView.byId("employeeCombo")._lastValue;
             const startDate = oView.byId("startDatePicker").getDateValue();
             const endDate = oView.byId("endDatePicker").getDateValue();
             const chartType = oView.byId("chartTypeCombo").getSelectedKey();
 
+            if (taskType === "All") {
+                this.onShowSummary(startDate, endDate);
+
+                return;
+            }
             // if (employeeId === "All Employees") {
             //     employeeId = "";
             // }
@@ -58,7 +193,7 @@ sap.ui.define([
             let aFilters = [];
 
             if (aEmployeeIds.length > 0) {
-                const aEmpFilters = aEmployeeIds.map(id => new Filter("createdUser", FilterOperator.EQ, id));
+                const aEmpFilters = aEmployeeIds.map(id => new Filter("assignedTo", FilterOperator.EQ, id));
                 aFilters.push(new Filter({ filters: aEmpFilters, and: false })); // OR filter
             }
 
@@ -102,9 +237,11 @@ sap.ui.define([
                         });
                     }
                     this.prepareChartData(aResults, taskType, chartType);
+                    that.busyDialog.close();
                 },
                 error: () => {
                     MessageToast.show("Error fetching data from backend.");
+                    that.busyDialog.close();
                 }
             });
         },
@@ -212,6 +349,7 @@ sap.ui.define([
                             const measureName = oTooltip.data[0].data.context.sPath.split("/").pop(); // employee name
                             const value = oTooltip.data[0].data[measureName];
                             return `${measureName}\n${chartType}: ${dim}\nCount: ${value}`;
+
                         }
                     }
                 },
@@ -242,6 +380,8 @@ sap.ui.define([
             });
 
             oMainChart.setDataset(oDataset);
+            that.busyDialog.close()
+
 
             // Bind feeds
             oMainChart.removeAllFeeds();

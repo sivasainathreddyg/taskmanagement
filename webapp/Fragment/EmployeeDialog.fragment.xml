@@ -11,7 +11,7 @@
             <Input
                 id="eidInput"
                 value="{EmployeeModel>/id}"
-                 editable="{= ${dialogMode>/dialogMode} === 'Add'}"
+                editable="{= ${dialogMode>/dialogMode} === 'Add'}"
             />
 
             <Label text="Name" />
@@ -29,11 +29,38 @@
             />
 
             <Label text="Admin" />
-            <Input
+            <!-- <Input
                 id="adminInput"
                 value="{EmployeeModel>/admin}"
                 placeholder="Y/N"
-            />
+            /> -->
+            <ComboBox id="adimncb" selectedKey="{EmployeeModel>/admin}">
+                <core:Item
+                    key="Y"
+                    text="Yes"
+                />
+                <core:Item
+                    key="N"
+                    text="No"
+                />
+            </ComboBox>
+
+            <Label text="Role" />
+            <!-- <Input
+                id="roleInput"
+                value="{EmployeeModel>/role}"
+                placeholder="D/A"
+            /> -->
+            <ComboBox id="role" selectedKey="{EmployeeModel>/role}" >
+                <core:Item
+                    key="D"
+                    text="Developer"
+                />
+                <core:Item
+                    key="A"
+                    text="Analyst"
+                />
+            </ComboBox>
         </VBox>
 
         <beginButton>

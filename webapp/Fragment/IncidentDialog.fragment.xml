@@ -5,55 +5,38 @@
     <Dialog
         id="Incident"
         title="Change Request"
+        draggable="true"
+        resizable="true"
     >
         <VBox class="sapUiSmallMargin">
             <!-- Number -->
-            <Label text="Number" required="true" />
+            <Label
+                text="TaskNumber"
+                required="true"
+            />
             <Input
                 id="IcrNumber"
-                type="Number"
                 editable="{= ${IncidentModel>/isEditable} }"
                 value="{IncidentModel>/number}"
             />
 
             <!-- Change Request -->
-            <Label text="Incidents" required="true"/>
+            <Label
+                text="Incidents"
+                required="true"
+            />
             <Input
                 id="incidents"
                 value="{IncidentModel>/changeRequest}"
             />
 
-            <!-- Type -->
-            <Label text="Type" required="true"/>
-            <Select
-                id="IcrType"
-                selectedKey="{IncidentModel>/type}"
-            >
-                <core:Item
-                    key=""
-                    text="-- Select Type --"
-                />
-                <core:Item
-                    key="Planning"
-                    text="Planning"
-                />
-                <core:Item
-                    key="Implementation"
-                    text="Implementation"
-                />
-                <core:Item
-                    key="Testing"
-                    text="Testing"
-                />
-                <core:Item
-                    key="Review"
-                    text="Review"
-                />
-            </Select>
-
             <!-- Status (Hardcoded) -->
-            <Label text="Status" required="true"/>
+            <Label
+                text="Status"
+                required="true"
+            />
             <Select
+                width="100%"
                 id="IcrStatus"
                 selectedKey="{IncidentModel>/status}"
             >
@@ -81,35 +64,116 @@
                     key="Canceled"
                     text="Canceled"
                 />
+                <core:Item
+                    key="Ready for retest"
+                    text="Ready for retest"
+                />
+                <core:Item
+                    key="Resloved"
+                    text="Resloved"
+                />
             </Select>
             <!-- BA (Input instead of dropdown) -->
-            <Label text="BA" required="true"/>
-            <Input
+            <Label
+                text="Analyst"
+                required="true"
+            />
+            <HBox>
+                <ComboBox
+                    id="IcrBA"
+                    width="100%"
+                    selectedKey="{IncidentModel>/BA}"
+                    items="{AnalystModel>/}"
+                    placeholder="Select Analyst"
+                >
+                    <layoutData>
+                        <FlexItemData growFactor="1" />
+                    </layoutData>
+                    <items>
+                        <core:Item
+                            key="{AnalystModel>name}"
+                            text="{AnalystModel>name}"
+                        />
+                    </items>
+                </ComboBox>
+
+                <Button
+                    icon="sap-icon://add"
+                    type="Transparent"
+                    tooltip="Add new Analyst"
+                    press=".onAddNewEmployee('A')"
+                />
+            </HBox>
+
+            <!-- <Input
                 id="IcrBA"
                 value="{IncidentModel>/BA}"
-            />
+            /> -->
 
             <!-- Assigned To (Input instead of dropdown) -->
-            <Label text="Assigned To" required="true"/>
+            <!-- <Label text="Developer" required="true"/>
             <Input
                 id="IcrAssignedTo"
                 value="{IncidentModel>/assignedTo}"
+            /> -->
+
+            <Label
+                text="Developer"
+                required="true"
             />
 
+            <HBox>
+                <ComboBox
+                    id="IcrAssignedTo"
+                    width="100%"
+                    selectedKey="{IncidentModel>/assignedTo}"
+                    items="{DeveloperModel>/}"
+                    placeholder="Select Developer"
+                >
+                    <layoutData>
+                        <FlexItemData growFactor="1" />
+                    </layoutData>
+                    <items>
+                        <core:Item
+                            key="{DeveloperModel>name}"
+                            text="{DeveloperModel>name}"
+                        />
+                    </items>
+                </ComboBox>
+
+                <!-- Small “+” icon for adding a new developer -->
+                <Button
+                    icon="sap-icon://add"
+                    type="Transparent"
+                    tooltip="Add new developer"
+                    press=".onAddNewEmployee('D')"
+                />
+            </HBox>
+
             <!-- Description -->
-            <Label text="Description" required="true"/>
+            <Label
+                text="Description"
+                required="true"
+            />
             <TextArea
                 id="IcrDescription"
                 value="{IncidentModel>/description}"
-                rows="1"
+                rows="2"
                 width="100%"
             />
             <Label text="Created Date" />
-            <DatePicker
+            <!-- <DatePicker
                 id="ICreateDate"
                 value="{IncidentModel>/createDate}"
                 displayFormat="yyyy-MM-dd"
                 valueFormat="yyyy-MM-dd"
+            /> -->
+            <DateTimePicker
+                id="ICreateDate"
+                value="{IncidentModel>/createDate}"
+                displayFormat="yyyy-MM-dd HH:mm:ss"
+                valueFormat="yyyy-MM-dd'T'HH:mm:ss"
+                placeholder="Select date and time"
             />
             <!-- On Hold (Radio Buttons) -->
             <CheckBox
@@ -126,16 +190,17 @@
                 columns="2"
             >
                 <buttons>
-                    <RadioButton
-                        text="Yes"
-                        key="Yes"
-                    />
-                    <RadioButton
-                        text="No"
-                        key="No"
-                    />
+                    <RadioButton text="Yes" />
+                    <RadioButton text="No" />
                 </buttons>
             </RadioButtonGroup>
+            <Label text="Comments" />
+            <TextArea
+                id="IcrComments"
+                value="{IncidentModel>/comment}"
+                rows="2"
+                width="100%"
+            />
         </VBox>
 
         <beginButton>

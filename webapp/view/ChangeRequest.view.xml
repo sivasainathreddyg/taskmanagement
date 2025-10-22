@@ -5,18 +5,71 @@
     xmlns:core="sap.ui.core"
 >
     <Page
-        title="Change Requests"
+        title="Change Requests Management"
         showNavButton="true"
         navButtonPress="onpresshome"
     >
-        <VBox class="sapUiSmallMargin">
-            <!-- Toolbar -->
+        <!-- <VBox class="sapUiSmallMargin"> -->
+        <!-- Toolbar -->
+        <subHeader>
             <Toolbar>
                 <Title
-                    text="Manage Change Requests"
+                    text=""
                     level="H2"
                 />
                 <ToolbarSpacer />
+                <Label text="Status:" />
+                <ComboBox
+                    id="IdcrqStatus"
+                    selectionChange=".onFilterChange"
+                >
+                    <core:Item
+                        key="Pending"
+                        text="Pending"
+                    />
+                    <core:Item
+                        key="Open"
+                        text="Open"
+                    />
+                    <core:Item
+                        key="InProgress"
+                        text="InProgress"
+                    />
+                    <core:Item
+                        key="Closed"
+                        text="Closed"
+                    />
+                    <core:Item
+                        key="Canceled"
+                        text="Canceled"
+                    />
+                    <core:Item
+                        key="Ready for retest"
+                        text="Ready for retest"
+                    />
+                    <core:Item
+                        key="Resloved"
+                        text="Resloved"
+                    />
+                </ComboBox>
+                <Label text="Developer:" />
+                <ComboBox
+                    id="idcrqdeveloper"
+                    selectionChange=".onFilterChange"
+                    items="{DeveloperModel>/}"
+                >
+                   <core:Item
+                            key="{DeveloperModel>name}"
+                            text="{DeveloperModel>name}"
+                        />
+                </ComboBox>
+                <DateRangeSelection
+                    id="idcrqDateRange"
+                    width="10%"
+                    displayFormat="yyyy-MM-dd"
+                    change="onFilterChange"
+                    placeholder="select the daterange "
+                />
                 <Button
                     text="Add"
                     icon="sap-icon://add"
@@ -36,22 +89,33 @@
                     type="Negative"
                 />
                 <Button
+                    text="Show Summary"
+                    press="onShowsummary"
+                    type="Emphasized"
+                />
+                <Button
                     icon="sap-icon://refresh"
                     press="onrefreshPress"
                     type="Emphasized"
                 />
             </Toolbar>
+        </subHeader>
 
-            <!-- Table -->
+        <!-- Table -->
+        <content>
             <Table
                 id="changeRequestTable"
-                items="{TaskDataModel>/}"
                 inset="false"
                 mode="SingleSelectLeft"
+                sticky="ColumnHeaders"
+                items="{
+                        path: 'TaskDataModel>/',
+                        sorter: { path: 'updateDate', descending: true }
+                    }"
             >
                 <columns>
                     <Column>
-                        <Text text="Number" />
+                        <Text text="TaskNumber" />
                     </Column>
                     <Column>
                         <Text text="Change Request" />
@@ -63,10 +127,10 @@
                         <Text text="Status" />
                     </Column>
                     <Column>
-                        <Text text="BA" />
+                        <Text text="Analyst" />
                     </Column>
                     <Column>
-                        <Text text="Assigned To" />
+                        <Text text="Developer" />
                     </Column>
                     <Column>
                         <Text text="Created Date" />
@@ -74,11 +138,14 @@
                     <Column>
                         <Text text="Updated Date" />
                     </Column>
-                    <Column>
+                    <Column width="5%">
                         <Text text="On Hold" />
                     </Column>
-                    <Column>
+                    <Column width="5%">
                         <Text text="Vistex" />
+                    </Column>
+                    <Column>
+                        <Text text="Comment" />
                     </Column>
                 </columns>
 
@@ -92,20 +159,42 @@
                             <Text text="{TaskDataModel>BA}" />
                             <Text text="{TaskDataModel>assignedTo}" />
                             <Text
-                                text="{ path: 'TaskDataModel>createDate', type: 'sap.ui.model.type.Date', formatOptions: { style: 'medium' }}"
+                                text="{
+                                    path: 'TaskDataModel>createDate',
+                                    type: 'sap.ui.model.type.DateTime',
+                                    formatOptions: {
+                                        pattern: 'dd-MMM-yyyy HH:mm:ss',
+                                        UTC: false
+                                    }
+                                }"
                             />
                             <Text
-                                text="{ path: 'TaskDataModel>updateDate', type: 'sap.ui.model.type.Date', formatOptions: { style: 'medium' }}"
+                                text="{
+                                    path: 'TaskDataModel>updateDate',
+                                    type: 'sap.ui.model.type.DateTime',
+                                    formatOptions: {
+                                        pattern: 'dd-MMM-yyyy HH:mm:ss',
+                                        UTC: false
+                                    }
+                                }"
                             />
                             <Text
                                 text="{path: 'TaskDataModel>onHoldcheck',formatter:'.yesNoFormatter'}"
                             />
 
                             <Text text="{TaskDataModel>vistexcheck}" />
+                            <!-- <Text text="{TaskDataModel>comment}" /> -->
+                            <ExpandableText
+                                maxCharacters="40"
+                                class="sapUiTinyMarginBottom sapUiTinyMarginTop"
+                                text="{TaskDataModel>comment}"
+                                overflowMode="Popover"
+                            />
                         </cells>
                     </ColumnListItem>
                 </items>
             </Table>
-        </VBox>
+        </content>
+        <!-- </VBox> -->
     </Page>
 </mvc:View>

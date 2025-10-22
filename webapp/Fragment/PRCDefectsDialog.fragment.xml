@@ -5,6 +5,8 @@
     <Dialog
         id="prcDefectsDialog"
         title="PRCDefects"
+        draggable="true"
+        resizable="true"
     >
         <VBox class="sapUiSmallMargin">
             <Label
@@ -39,14 +41,36 @@
             />
 
             <Label
-                text="Assigned To"
+                text="Developer"
                 required="true"
             />
-            <Input
-                id="assignedToInput"
-                value="{PRCDefectsModel>/assignedTo}"
-                placeholder="Assigned To"
-            />
+            <HBox>
+                <ComboBox
+                    id="assignedToInput"
+                    width="100%"
+                    selectedKey="{PRCDefectsModel>/assignedTo}"
+                    items="{DeveloperModel>/}"
+                    placeholder="Select Developer"
+                >
+                    <layoutData>
+                        <FlexItemData growFactor="1" />
+                    </layoutData>
+                    <items>
+                        <core:Item
+                            key="{DeveloperModel>name}"
+                            text="{DeveloperModel>name}"
+                        />
+                    </items>
+                </ComboBox>
+
+                <!-- Small “+” icon for adding a new developer -->
+                <Button
+                    icon="sap-icon://add"
+                    type="Transparent"
+                    tooltip="Add new developer"
+                    press=".onAddNewEmployee('D')"
+                />
+            </HBox>
 
             <!-- <Label
                 text="Priority"
@@ -127,14 +151,22 @@
                     key="Canceled"
                     text="Canceled"
                 />
+                <core:Item
+                    key="Ready for retest"
+                    text="Ready for retest"
+                />
+                <core:Item
+                    key="Resloved"
+                    text="Resloved"
+                />
             </Select>
 
             <Label
                 text="Effort"
                 required="true"
             />
-           
-             <Select
+
+            <Select
                 id="effortInput"
                 selectedKey="{PRCDefectsModel>/effort}"
                 width="100%"
@@ -148,7 +180,7 @@
                     text="High > 40 Hrs"
                 />
                 <core:Item
-                    key= "Low &lt; 16 Hrs"
+                    key="Low &lt; 16 Hrs"
                     text="Low &lt; 16 Hrs"
                 />
             </Select>
@@ -169,17 +201,40 @@
                 value="{PRCDefectsModel>/createdDate}"
                 valueFormat="yyyy-MM-dd"
                 displayFormat="long"
+                maxDate="{path: 'PRCDefectsModel>/createdDate', formatter: '.getToday'}"
             />
 
             <Label
                 text="Created By"
                 required="true"
             />
-            <Input
-                id="createdByInput"
-                value="{PRCDefectsModel>/createdBy}"
-                placeholder="Created By"
-            />
+
+            <HBox>
+                <ComboBox
+                    id="createdByInput"
+                    width="100%"
+                    selectedKey="{PRCDefectsModel>/createdBy}"
+                    items="{AnalystModel>/}"
+                    placeholder="Select Analyst"
+                >
+                    <layoutData>
+                        <FlexItemData growFactor="1" />
+                    </layoutData>
+                    <items>
+                        <core:Item
+                            key="{AnalystModel>name}"
+                            text="{AnalystModel>name}"
+                        />
+                    </items>
+                </ComboBox>
+
+                <Button
+                    icon="sap-icon://add"
+                    type="Transparent"
+                    tooltip="Add new Analyst"
+                    press=".onAddNewEmployee('A')"
+                />
+            </HBox>
         </VBox>
 
         <beginButton>

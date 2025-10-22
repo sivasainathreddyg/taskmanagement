@@ -38,7 +38,7 @@
                 </TileContent>
             </GenericTile>
             <GenericTile
-                header="Change Request"
+                header="Change Requests"
                 press="onChangeRequestPress"
                 class="sapUiSmallMargin"
             >

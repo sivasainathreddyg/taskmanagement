@@ -56,18 +56,18 @@ sap.ui.define([
             var oModeModel = new sap.ui.model.json.JSONModel({ dialogMode: sMode });
             this.getView().setModel(oModeModel, "dialogMode");
 
-            if (!this.oDialog) {
-                this.oDialog = sap.ui.xmlfragment(
+            if (!this.EDialog) {
+                this.EDialog = sap.ui.xmlfragment(
                     "com.taskmanagement.taskmanagement.Fragment.EmployeeDialog",
                     this
                 );
-                this.getView().addDependent(this.oDialog);
+                this.getView().addDependent(this.EDialog);
             }
 
-            var oBtn = this.oDialog.getBeginButton();
+            var oBtn = this.EDialog.getBeginButton();
             oBtn.setText(sMode === "Add" ? "Save" : "Update");
 
-            this.oDialog.open();
+            this.EDialog.open();
         },
 
         onCreateupdatePress: function (oEvent) {
@@ -86,7 +86,7 @@ sap.ui.define([
             oModel.create("/Employee", oEntry, {
                 success: function () {
                     MessageToast.show("Employee created successfully");
-                    this.oDialog.close();
+                    this.EDialog.close();
                     this.readdata();
                 }.bind(this),
                 error: function () {
@@ -104,7 +104,7 @@ sap.ui.define([
             oModel.update(`/Employee(${oEntry.id})`, payload, {
                 success: function () {
                     MessageToast.show("Employee updated successfully");
-                    this.oDialog.close();
+                    this.EDialog.close();
                     this.readdata();
                 }.bind(this),
                 error: function () {
@@ -137,7 +137,7 @@ sap.ui.define([
         },
 
         onCancelPress: function () {
-            this.oDialog.close();
+            this.EDialog.close();
         },
 
         onpresshome: function () {
